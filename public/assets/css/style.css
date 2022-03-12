@@ -1,0 +1,149 @@
+body {
+    text-align: right;
+}
+nav {
+    padding: 20px 0;
+}
+ul, li {
+    list-style: none;
+}
+a {
+    color: #75869a;
+}
+a:hover {
+    text-decoration: none;
+}
+a.bg-gr {
+    background-color: #f5f5f5;
+    padding: 6px;
+    color: #75869a;
+    border-radius: 10px;
+}
+img.circle {
+    border-radius: 50%;
+}
+.section-heading {
+    margin-bottom: 15px;
+}
+.section-heading span {
+    border-bottom: 2px solid #f92f72;
+    padding-bottom: 5px;
+}
+
+/* Navbar */
+nav .menu {
+    text-align: right;
+    margin-top: 30px;
+}
+nav .menu ul {
+    font-size: 0;
+    padding: 0;
+}
+nav .menu ul li {
+    display: inline-block;
+    margin: 5px 12px;
+    background-color: #f5f5f5;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 18px;
+}
+nav .menu ul li a {
+    text-decoration: none;
+    color: #75869a;
+}
+nav .menu ul li a:hover {
+    color: #333;
+}
+
+.hero img {
+    width: 100%;
+    height: 400px;
+}
+
+section.section {
+    margin: 50px 0;
+}
+
+.people {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0px;
+    padding: 15px 0;
+    overflow: auto;
+}
+.people .single {
+    margin: 0 5px;
+}
+.people .single img {
+    border-radius: 10px;
+}
+
+footer {
+    border-top: 1px solid #eee;
+}
+footer .footer-menu {
+    margin: 15px 0;
+    text-align: center;
+    font-size: 0;
+}
+footer .footer-menu li {
+    display: inline-block;
+    margin: 0 15px;
+    font-size: 16px;
+}
+
+/* Single Page */
+
+.single-overview {
+    margin: 20px 0;
+}
+
+.single-cat-list {
+    margin: 25px 0 15px;
+    padding: 0;
+    font-size: 0;
+}
+.single-cat-list li {
+    display: inline-block;
+    margin: 0 5px;
+    font-size: 14px;
+}
+.single-cat-list li:first-child {
+    margin-right: 0;
+}
+.single-cat-list li a {
+    padding: 5px 10px;
+}
+
+.single-video-wrap {
+    width: 360px;
+    height: 480px;
+}
+.single-video-wrap video {
+    width: 100%;
+    height: 100%;
+}
+.delivery {
+    text-align: center;
+    padding: 10px;
+    margin: 15px 0;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+/* Category Page */
+.category .single {
+    margin: 20px 0;
+}
+.category .single img {
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+/* Register & Login Pages */
+.register form,
+.login form
+{
+    width: 50%;
+    margin: 20px auto;
+    text-align: right;
+}
