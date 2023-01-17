@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
-
+use Config;
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +13,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+         'App\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -25,6 +25,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        $config = config('global.permissions');
+        foreach (Config::get('global.permissions') as $ability => $value) {
+            Gate::define($ability, function ($auth) use ($ability) {
+                return $auth->hasAbility($ability);
+            });
+        }
     }
 }

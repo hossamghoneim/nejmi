@@ -13,6 +13,19 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">كل المستخدمين</h6>
+            @if(request()->word)
+                <div class="mt-3">
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-dark btn-custom mx-1">الكل</a>
+                </div>
+            @endif
+            <div class="mt-3">
+                <form action="{{ route('admin.users.index') }}" method="get">
+                    <div class="form-group">
+                        <input type="text" name="word" class="form-control w-50 float-right" placeholder="بحث...">
+                        <input type="submit" class="btn btn-info mx-2" value="بحث">
+                    </div>
+                </form>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -22,19 +35,9 @@
                         <th>الصورة</th>
                         <th>الاسم</th>
                         <th>الهاتف</th>
-                        <th>البلد</th>
                         <th>خيارات</th>
                     </tr>
                     </thead>
-                    <tfoot>
-                    <tr>
-                        <th>الصورة</th>
-                        <th>الاسم</th>
-                        <th>الهاتف</th>
-                        <th>البلد</th>
-                        <th>خيارات</th>
-                    </tr>
-                    </tfoot>
                     <tbody>
                     @forelse($users as $user)
                         <tr>
@@ -47,14 +50,21 @@
                             </td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->phone }}</td>
-                            <td>{{ $user->country->name }}</td>
                             <td class="text-center">
-                                <a onclick="del({{ $user->id }})"
-                                   data-toggle="modal"
-                                   data-target="#deleteModal"
-                                   class="btn btn-danger btn-sm">
-                                    <i class="fa fa-trash-alt"></i>
-                                </a>
+                                <div class="btn-group">
+                                    <a href="{{ route('admin.users.show', $user->id) }}"
+                                       class="btn btn-success btn-sm">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                    @if(auth()->user()->role_id == 1)
+                                        <a onclick="del({{ $user->id }})"
+                                           data-toggle="modal"
+                                           data-target="#deleteModal"
+                                           class="btn btn-danger btn-sm">
+                                            <i class="fa fa-trash-alt"></i>
+                                        </a>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @empty

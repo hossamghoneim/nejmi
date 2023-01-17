@@ -7,17 +7,21 @@ Vue.use(VueRouter);
 import App from "../components/App";
 import Home from "../components/Home";
 import Login from "../components/auth/Login";
+import ForgotPassword from "../components/auth/ForgotPassword";
 import Register from "../components/auth/Register";
 import Join from "../components/auth/Join";
 import Category from "../components/Category";
 import Profile from "../components/Profile";
 import OrderAd from "../components/OrderAd";
+import Page from "../components/Page";
 /* Account */
 import Dashboard from "../components/account/Dashboard";
 import Videos from "../components/account/Videos";
 import Account from "../components/account/Account";
 import Orders from "../components/account/Orders";
 import OrderGift from "../components/OrderGift";
+import UserAlerts from "../components/account/UserAlerts";
+import Logs from "../components/account/Logs";
 
 
 const routes = new VueRouter({
@@ -34,9 +38,19 @@ const routes = new VueRouter({
             name: 'login'
         },
         {
+            path: '/forgot-password',
+            component: ForgotPassword,
+            name: 'forgot_password'
+        },
+        {
             path: '/register',
             component: Register,
             name: 'register'
+        },
+        {
+            path: '/page/:slug',
+            component: Page,
+            name: 'page'
         },
         {
             path: '/join',
@@ -49,7 +63,7 @@ const routes = new VueRouter({
             name: 'category'
         },
         {
-            path: '/user/:id',
+            path: '/user/:username',
             component: Profile,
             name: 'profile'
         },
@@ -82,6 +96,16 @@ const routes = new VueRouter({
             path: '/orders',
             component: Orders,
             name: 'orders'
+        },
+        {
+            path: '/alerts',
+            component: UserAlerts,
+            name: 'alerts'
+        },
+        {
+            path: '/logs',
+            component: Logs,
+            name: 'logs'
         }
     ]
 });

@@ -44,7 +44,7 @@
                 <div class="col-12">
                     <h6 class="py-2">
                         مرسل الطلب:
-                        <strong class="d-block pt-2">{{ $order->user->name }}</strong>
+                        <strong class="d-block pt-2">{{ $order->user ? $order->user->name : "غير مسجل" }}</strong>
                     </h6>
                     <h6 class="py-2">
                         المشهور:
@@ -70,63 +70,105 @@
                     @endif
                     <h6 class="py-2">
                         قيمة الطلب:
-                        <strong class="d-block pt-2">{{ $order->mount }}$</strong>
+                        <strong class="d-block pt-2">{{ $order->mount }} MRU</strong>
                     </h6>
                     <h6 class="py-2">
                         رقم هاتف المشتري:
                         <strong class="d-block pt-2">{{ $order->phone }}</strong>
                     </h6>
-                    <h6 class="py-2">صورة إثبات الدفع:</h6>
-                    <a href="{{ asset('images/orders/' . $order->image) }}">
-                        <img src="{{ asset('images/orders/' . $order->image) }}" class="payment-image">
-                    </a>
+                    @if(auth()->id() == 1)
+                        <h6 class="py-2">
+                            العمولة:
+                            <strong class="d-block pt-2">{{ $order->commission }}%</strong>
+                        </h6>
+                    @endif
+                    @if($order->image)
+                        <h6 class="py-2">صورة إثبات الدفع:</h6>
+                        <a href="{{ asset('images/orders/' . $order->image) }}">
+                            <img src="{{ asset('images/orders/' . $order->image) }}" class="payment-image">
+                        </a>
+                    @endif
                     <h6 class="py-2">
                         الرسالة:
                         <strong class="d-block pt-2">{{ $order->message }}</strong>
                     </h6>
-                    <h6 class="py-2">
-                        حالة الطلب:
-                        @if($order->status == 1)
-                            <strong class="text-success d-block pt-2">مقبول</strong>
-                        @elseif($order->status == 0)
-                            <strong class="text-black-50 d-block pt-2">قيد المراجعة</strong>
-                        @else
-                            <strong class="text-danger d-block pt-2">مرفوض</strong>
-                        @endif
-                    </h6>
-                    <h6 class="py-2">
-                        حالة المستحقات المالية للمهشور:
-                        @if($order->done == 1)
-                            <strong class="text-success d-block pt-2">تم تسليمها</strong>
-                        @elseif($order->done == 0)
-                            <strong class="text-black-50 d-block pt-2">لم يتم تسليمها</strong>
-                        @endif
-                    </h6>
+                    @if($order->image)
+                        <h6 class="py-2">
+                            حالة الطلب:
+                            @if($order->status == 1)
+                                <strong class="text-success d-block pt-2">مقبول</strong>
+                            @elseif($order->status == 0)
+                                <strong class="text-black-50 d-block pt-2">قيد المراجعة</strong>
+                            @else
+                                <strong class="text-danger d-block pt-2">مرفوض</strong>
+                            @endif
+                        </h6>
+                        <h6 class="py-2">
+                            حالة المستحقات المالية للمشهور:
+                            @if($order->done == 1)
+                                <strong class="text-success d-block pt-2">تم تسليمها</strong>
+                            @elseif($order->done == 0)
+                                <strong class="text-black-50 d-block pt-2">لم يتم تسليمها</strong>
+                            @endif
+                        </h6>
+                    @endif
                     <hr>
-                    <form action="{{ route('admin.orders.change') }}" method="post">
+                    @if($order->done != 1 && $order->image)
+                        <form action="{{ route('admin.orders.change') }}" method="post">
                         @csrf
                         <input type="hidden" name="order_id" value="{{ $order->id }}">
+                        <input type="hidden" name="user_id" value="{{ $order->freelancer->id }}">
                         <div class="form-group">
                             <label>تغيير حالة الطلب</label>
                             <select name="status" class="form-control">
+                                <option value="">اختر</option>
                                 <option value="1">قبول</option>
                                 <option value="-1">رفض</option>
                             </select>
                         </div>
+
                         <div class="form-group">
                             <label>المستحقات المالية للمشهور</label>
-                            <select name="done" class="form-control">
+                            <select name="done" class="form-control" id="done">
+                                <option value="">اختر</option>
                                 <option value="1">تم تسليمها</option>
                                 <option value="0">لم يتم تسليمها</option>
                             </select>
                         </div>
+                        <div class="form-group" id="notes">
+
+                        </div>
                         <div class="form-group">
                             <input type="submit" value="حفظ" class="btn btn-success">
+                            <a href="https://wa.me/{{ $order->freelancer->phone }}/?text={{ $whatsappMessage }}" class="btn btn-primary">
+                                <i class="fab fa-whatsapp"></i>
+                                إرسال إلى واتساب
+                            </a>
                         </div>
                     </form>
+                    @endif
+                    @if(!$order->image)
+                        <a href="https://wa.me/{{ $order->phone }}/?text={{ $whatsappMessage }}" class="btn btn-primary">
+                            <i class="fab fa-whatsapp"></i>
+                            إرسال تذكير إلى واتساب
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 
 @endsection
+
+@push('script')
+    <script>
+        $('#done').on('change', function () {
+            if($(this).val() == 1) {
+                $('#notes').append('<label>ملاحظات</label>\n' +
+                    '                            <textarea name="notes" class="form-control" cols="30" rows="10"></textarea>');
+            } else {
+                $('#notes').children(0).remove();
+            }
+        })
+    </script>
+@endpush

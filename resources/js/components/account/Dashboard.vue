@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="container">
+        <div class="container" style="direction:rtl; margin-top:40px;">
             <div class="row mb-5">
                 <div class="col-12 text-center mb-3">
                     <h4>لوحة التحكم</h4>
@@ -10,20 +10,32 @@
                         <ul>
                             <li class="active">
                                 <router-link to="/dashboard">
-                                    <i class="fa fa-home"></i>
+
                                     لوحة التحكم
                                 </router-link>
                             </li>
                             <li v-if="auth.type == 1">
                                 <router-link to="/videos">
-                                    <i class="fa fa-video"></i>
+
                                     الفيديوهات
                                 </router-link>
                             </li>
-                            <li v-if="auth.type == 0">
+                            <li>
                                 <router-link to="/orders">
-                                    <i class="fa fa-bars"></i>
+
                                     طلباتي
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link to="/logs">
+
+                                    السجل
+                                </router-link>
+                            </li>
+                            <li v-if="auth.type == 0">
+                                <router-link to="/alerts">
+
+                                    التنبيهات
                                 </router-link>
                             </li>
                             <li>
@@ -34,7 +46,7 @@
                             </li>
                             <li>
                                 <a href="/logout">
-                                    <i class="fa fa-sign-out-alt"></i>
+
                                     تسجيل الخروج
                                 </a>
                             </li>
@@ -46,26 +58,45 @@
                         <div class="row">
                             <div class="col-12 col-md-4" v-if="auth.type == 1">
                                 <div class="box blue">
-                                    <i class="fa fa-video"></i>
+
                                     <router-link to="/videos">إضافة فيديو</router-link>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4" v-if="auth.type ==0">
                                 <div class="box blue">
-                                    <i class="fa fa-bars"></i>
+
                                     <router-link to="/orders">طلباتي</router-link>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="box green">
-                                    <i class="fa fa-edit"></i>
+
                                     <router-link to="/account">تعديل بياناتي</router-link>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4" v-if="auth.type == 1">
                                 <div class="box orange">
-                                    <i class="fa fa-eye"></i>
-                                    <router-link :to="'/user/'+auth.id">معاينة ملفي الشخصي</router-link>
+
+                                    <router-link :to="'/user/'+auth.username">معاينة ملفي الشخصي</router-link>
+                                </div>
+                            </div>
+                            <div class="col-12 my-4" v-if="auth.type == 1">
+                                <h3>استقبال الطلبات</h3>
+                                <div class="form-group mt-3">
+                                    <input type="checkbox"
+                                           id="accept_orders"
+                                           v-model="acceptOrders"
+                                           @change="toggleAcceptOrders('orders')"
+                                    >
+                                    <label for="accept_orders">السماح باستقبال الطلبات</label>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <input type="checkbox"
+                                           id="accept_gifts"
+                                           v-model="acceptGifts"
+                                           @change="toggleAcceptOrders('gifts')"
+                                    >
+                                    <label for="accept_gifts">السماح باستقبال طلبات الإهداء</label>
                                 </div>
                             </div>
                         </div>
@@ -78,9 +109,44 @@
 
 <script>
 export default {
+    mounted() {
+        this.$emit('active', '')
+        this.acceptOrders = authUser.accept_orders
+        this.acceptGifts = authUser.accept_gifts
+    },
     data: function () {
         return {
             auth: authUser,
+            acceptOrders: null,
+            acceptGifts: null
+        }
+    },
+    methods: {
+        toggleAcceptOrders(t) {
+            axios.post("/request/toggle-accept-orders", {
+                accept_orders: this.acceptOrders,
+                accept_gifts: this.acceptGifts,
+                type: t
+            })
+                .then((res) => {
+                    if(res.status == 200) {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+                        Toast.fire({
+                            icon: 'success',
+                            title: res.data
+                        })
+                    }
+                })
         }
     }
 }
@@ -101,7 +167,7 @@ export default {
     border-bottom: 1px solid #eee;
 }
 .dashboard-menu ul li.active a {
-    color: blue;
+    color: #25D366 !important;
 }
 .stats .box {
     color: #fff;

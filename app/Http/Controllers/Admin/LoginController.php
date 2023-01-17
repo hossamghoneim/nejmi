@@ -40,11 +40,15 @@ class LoginController extends Controller
 
     public function profile()
     {
+        if(auth()->user()->role_id != 1)
+            return redirect('/');
         $admin = Admin::find(1);
         return view('admin.profile.index')->with('admin',$admin);
     }
 
     public function profileUpdate(Request $request) {
+        if(auth()->user()->role_id != 1)
+            return redirect('/');
         $data = $request->validate([
             'name' => 'required',
             'email' => 'required',

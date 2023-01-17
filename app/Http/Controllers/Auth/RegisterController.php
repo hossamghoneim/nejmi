@@ -24,8 +24,6 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
-
     /**
      * Where to redirect users after registration.
      *
@@ -67,29 +65,38 @@ class RegisterController extends Controller
 
     public function register_action(Request $request) {
 
-        if(User::where('phone', $request->phone)->first())
-            return 0;
+        if($request->username) {
+            $u = User::where('username', $request->username)->first();
+            if($u)
+                return response()->json('اسم المستخدم موجود مسبقاً',409);
+        }
+
+        if($request->phone) {
+            $u = User::where('phone', $request->phone)->first();
+            if($u)
+                return response()->json('رقم الهاتف موجود مسبقاً',409);
+        }
 
         $data = [
             "name" => $request->name,
+            "username" => $request->username,
             "password" => $request->password,
             "phone" => $request->phone,
-            "country_id" => $request->country_id,
             "category_id" => $request->category_id,
             "price_ad" => $request->price_ad,
             "price_gift" => $request->price_gift,
             "followers" => $request->followers,
             "about" => $request->about,
-            "image" => $request->image,
+            "video" => $request->video,
             "type" => $request->type,
         ];
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $filename = $image->getClientOriginalName();
+        if ($request->hasFile('video')) {
+            $video = $request->file('video');
+            $filename = $video->getClientOriginalName();
             $newName = uniqid() . '-' . now()->timestamp . $filename;
-            $image->move('images/users/', $newName);
-            $data['image'] = $newName;
+            $video->move('video/', $newName);
+            $data['video'] = $newName;
         }
 
         $check = $this->create($data);
@@ -113,7 +120,7 @@ class RegisterController extends Controller
         if($data['type'] == 1) {
             return User::create([
                 'name' => $data['name'],
-                'country_id' => $data['country_id'],
+                'username' => $data['username'],
                 'phone' => $data['phone'],
                 'followers' => $data['followers'],
                 'category_id' => $data['category_id'],
@@ -121,16 +128,14 @@ class RegisterController extends Controller
                 'price_gift' => $data['price_gift'],
                 'about' => $data['about'],
                 'type' => $data['type'],
-                'image' => $data['image'],
+                'video' => $data['video'],
                 'password' => Hash::make($data['password']),
             ]);
         } else {
             return User::create([
                 'name' => $data['name'],
-                'country_id' => $data['country_id'],
                 'phone' => $data['phone'],
                 'type' => $data['type'],
-                'image' => $data['image'],
                 'password' => Hash::make($data['password']),
             ]);
         }

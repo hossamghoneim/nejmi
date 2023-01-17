@@ -1,4 +1,5 @@
 @extends('admin.layout.app')
+@section('coupons', 'active')
 @section('content')
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -29,8 +30,12 @@
                     <input type="text" class="form-control" name="coupon">
                 </div>
                 <div class="form-group">
-                    <label>نسبة الحسم</label>
+                    <label>نسبة الحسم (%)</label>
                     <input type="number" class="form-control" name="discount">
+                </div>
+                <div class="form-group">
+                    <label>تاريخ إنتهاء الصلاحية</label>
+                    <input type="date" class="form-control" name="expire_date">
                 </div>
                 <div class="form-group">
                     <input type="submit" value="إضافة" class="btn btn-success">

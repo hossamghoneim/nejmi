@@ -1,94 +1,170 @@
 <template>
-    <div class="container">
-        <div class="row my-4" v-if="notFound || user.type == 0">
-            <div class="col-12 text-center">
-                <h3>المستخدم غير موجود</h3>
-                <img src="/assets/images/not_found.svg" class="d-block" style="width: 400px;margin: 25px auto">
+     <div>
+        <div class="bread" v-if="!notFound && user.type == 1">
+            <div class="container-fluid">
+                <span>الرئيسية | </span>
+                <span> {{ user.category.name }} | </span>
+                <a href="#"> {{ user.name }} </a>
             </div>
         </div>
-        <div class="row my-2" v-if="!notFound && user.type == 1">
-            <div class="col-12">
-                <div class="single-overview">
-                    <img v-if="user.image"
-                         class="circle"
-                         style="width: 200px;height: 200px;"
-                         :src="'/images/users/' + user.image">
-                    <img v-else src="/assets/images/default.png" style="width: 200px;height: 200px;">
-                    <h5 class="d-inline-block mx-3" v-if="user.name">{{ user.name }}</h5>
-                    <ul class="single-cat-list">
-                        <li v-if="user.category">
-                            <router-link :to="'/category/'+user.category.id" class="bg-gr">{{ user.category.name }}</router-link>
-                        </li>
-                    </ul>
-                    <p v-if="user.about">{{ user.about }}</p>
-                    <p class="delivery">
-                        التسليم خلال 24 ساعة
-                    </p>
-                    <router-link :to="'/order/' + user.id" class="btn btn-primary btn-block p-2">
-                        اطلب إعلان مقابل
-                        {{ user.price_ad }}$
-                    </router-link>
-                    <router-link :to="'/order-gift/' + user.id" class="btn btn-success btn-block p-2">
-                        اطلب إهداء مقابل
-                        {{ user.price_gift }}$
-                    </router-link>
-                </div>
-            </div>
-        </div>
+        <section class="artist_info">
+            <div class="container-fluid">
+                <div class="artis_wrapper">
+                    <div class="row" dir="rtl">
+                        <div class="col-xl-6">
+                            <div class="right_part d-flex">
 
-        <!-- Videos -->
-        <section v-if="!notFound && user.type == 1" class="section">
-            <div class="row">
-                <div class="col-12">
-                    <h3 class="section-heading">
-                        <span>الفيديوهات</span>
-                    </h3>
+                                <ul class="nav thumbs nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#first">
+                                            <div class="position-relative">
+                                                <img :src="'/images/users/'+user.image" alt="">
+                                                <img src="/assets/images/paly.png" class="play" alt="">
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#second">
+                                            <div class="position-relative">
+                                                <img :src="'/images/users/'+user.image" alt="">
+                                                <img src="/assets/images/paly.png" class="play" alt="">
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#third">
+                                            <div class="position-relative">
+                                                <img :src="'/images/users/'+user.image" alt="">
+                                                <img src="/assets/images/paly.png" class="play" alt="">
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div id="first" class=" tab-pane active">
+                                        <div class="main_img videoContainer">
+                                           <Myvideo class="video"  :sources="[{
+                                            // video uri
+                                            src : '/video/'+user.video,
+                                            // video meta type
+                                            type: 'video/mp4'
+                                        }]"></Myvideo>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="left_part">
+                                <h2> {{ user.name }} </h2>
+                                <h6> {{ user.category.name }} </h6>
+                                 <div class="rate d-flex align-items-center">
+                                    <div class="start">
+                                        <img src="/assets/images/star.png" alt="">
+                                        <img src="/assets/images/star.png" alt="">
+                                        <img src="/assets/images/star.png" alt="">
+                                        <img src="/assets/images/star.png" alt="">
+                                        <img src="/assets/images/star.png" alt="">
+                                    </div>
+                                    <span> 22.5 تقييم </span>
+                                </div>
+                                 <div class="rate_mobile">
+                                    <img src="/assets/images/star.png" alt="">
+                                    <span>5.00</span>
+                                </div>
+                                <p class="desc">
+                                 {{ user.about }}
+                                </p>
+
+                                <div class="make_choise">
+                                    <h4> <span> حدد اختيارك </span> </h4>
+                                </div>
+
+                                <div class="options">
+                                    <div @click="changeUrl('gift')" id="gift" class="gift_opt">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="label">
+                                                <img src="/assets/images/gift.png" alt="">
+                                                <span> فيديو اهداء </span>
+                                            </div>
+                                            <span class="price">{{ user.price_gift }} MRU </span>
+                                        </div>
+                                        <p>فيديو خاص لتفاجئ نفسك أو من تحب! </p>
+                                    </div>
+                                    <div @click="changeUrl('ad')" id="ad" style="border: red 2px solid" class="gift_opt envelope_opt">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="label">
+                                                <img src="/assets/images/envelope.png" alt="">
+                                                <span> طلب دعاية </span>
+                                            </div>
+                                            <span class="price">{{ user.price_ad }} MRU </span>
+                                        </div>
+
+                                        <p>فيديو اعلان او دعاية لمنتجك او لشركتك</p>
+                                    </div>
+                                    <router-link :to="url+user.id"  class="order_now d-block"> اطلب الان </router-link>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
-            <div class="row" v-if="user.videos && user.videos.length">
-                <div class="col-12 col-md-4" v-for="(video, index) in user.videos" :key="index">
-                    <video :src="'/videos/' + video.video" class="w-100" height="340" controls>
-                        <source :src="'/videos/' + video.video" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            </div>
-            <div class="text-center" v-else>
-                <p>لا يوجد فيديوهات</p>
-            </div>
-        </section>
-        <!-- People Section -->
-        <section v-if="!notFound && user.type == 1 && related.length" class="section discover">
-            <div class="row mb-4">
-                <div class="col-12">
-                    <h3 class="section-heading">
-                        <span>اكتشف أيضاً</span>
-                    </h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 col-md-3 text-center" v-for="rel in related" :key="rel.id">
-                    <router-link :to="'/user/' + rel.id" v-if="rel.image">
-                        <img :src="'/images/users/'+rel.image" class="w-100">
-                    </router-link>
-                    <router-link :to="'/user/' + rel.id" v-else>
-                        <img src="/assets/images/default.png" class="w-100">
-                    </router-link>
-                    <h5>
-                        <router-link :to="'/user/' + rel.id">{{ rel.name }}</router-link>
-                    </h5>
-                    <h6 v-if="rel.price_gift">{{ rel.price_gift }}$</h6>
-                </div>
+                <section class="share" dir="rtl">
+                    <div class="container-fluid">
+                        <div class="share_content d-flex">
+                            <img src="/assets/images/share.png" alt="share" />
+                            <div>
+                                <h3>شارك بعطفك</h3>
+                                <p>
+                                    اللي هتدفعه بيفرق. كل مرة هتشتري من نجمي ، هنتبرع بجزء من ثمنه
+                                    <span> لمؤسسة مجدي يعقوب.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="most_trend  trending first" v-if="this.related && this.related.length">
+                    <div dir="rtl" class="container-fluid">
+                        <div class="head d-flex align-items-center justify-content-between">
+                            <h2> شاهد المزيد </h2>
+
+                        </div>
+                        <carousel  :perPageCustom="[[0,1],[480, 2], [768, 3], [1000,4],[1200,5]]" :navigationClickTargetSize="0" :paginationEnabled="false" :navigationEnabled="false" :perPage="5"  v-if="this.related && this.related.length" class="most_trend most_trend_owl ">
+                            <slide v-for="artist in this.related" :key="artist.id" class="link">
+                                <router-link  :to="'/user/'+artist.username">
+                                    <img  :src="'/images/users/'+artist.image" class="img-radius" :alt="artist.name" />
+                                    <div class="desc">
+                                        <h5> {{ artist.name }} </h5>
+                                        <span> {{ artist.country.name }} , {{ artist.category.name }}</span>
+                                        <strong> {{ artist.price_gift }}  MRU  </strong>
+                                    </div>
+                                </router-link>
+                            </slide>
+
+
+                        </carousel>
+                    </div>
+                </section>
             </div>
         </section>
     </div>
 </template>
 
 <script>
+import { Carousel, Slide } from 'vue-carousel';
+import Myvideo from 'vue-video'
+
 export default {
     beforeRouteUpdate(to, from, next) {
-        let id = to.params.id
-        axios.get('/request/get-user/' + id)
+        this.$emit('active', '')
+        this.$emit('show', true)
+        let username = to.params.username
+        axios.get('/request/get-user/' + username)
             .then((res) => {
                 if(res.data == 0) {
                     this.notFound = true
@@ -102,17 +178,26 @@ export default {
         next()
     },
     mounted() {
-        let id = this.$route.params.id
-        axios.get('/request/get-user/' + id)
+        this.$emit('active', '')
+        this.$emit('show', true)
+        let username = this.$route.params.username
+        axios.get('/request/get-user/' + username)
             .then((res) => {
                 if(res.data == 0) {
                     this.notFound = true
                     return
                 }
-                // console.log(res.data)
+                console.log(res.data.user);
                 this.user = res.data.user
                 this.related = res.data.related
+                this.inSameCountry = res.data.sameCountry
+                this.videos = res.data.videos
+
             })
+        axios.get('/request/get-donation-image')
+        .then((res) => {
+            this.donation_image = res.data
+        })
     },
     data: function () {
         return {
@@ -123,7 +208,12 @@ export default {
                 order_type: "",
                 target_id: ""
             },
-            related: []
+            related: [],
+            inSameCountry : [],
+            url: window.location.href,
+            donation_image: "",
+            videos : [],
+            url : "/order/",
         }
     },
     methods: {
@@ -155,18 +245,64 @@ export default {
                     this.showOrder = false
                 }
             })
+        },
+        playVideo(videoId) {
+            var video = document.getElementById(videoId);
+            video.play();
+
+            var playBtn = document.getElementById('play-'+videoId);
+            playBtn.style.visibility = 'hidden';
+
+            document.getElementById('pause-'+videoId).style.visibility = 'visible';
+        },
+        pauseVideo(videoId) {
+            var video = document.getElementById(videoId);
+            video.pause();
+            var playBtn = document.getElementById('play-'+videoId);
+            playBtn.style.visibility = 'visible';
+
+            document.getElementById('pause-'+videoId).style.visibility = 'hidden';
+        },
+        putSrcsforVideos() {
+            var hostname = window.location.hostname;
+            if(hostname == '127.0.0.1') {
+                hostname = 'https://127.0.0.1:8000';
+            } else {
+                hostname = 'https://' + hostname;
+            }
+            if(this.videos.length >=  1) {
+                    for(var i = 0; i < this.videos.length; i++) {
+                        var video = document.getElementById(this.videos[i].id);
+                        var source = document.createElement('source');
+
+                        source.setAttribute('src','video/6RXBf83aNNBjBX7xpqaK0lSxAfzZuQJbMF0K1GIQ-web.mp4');
+                        source.setAttribute('type', 'video/mp4');
+                        video.appendChild(source);
+                    }
+                }
+        },
+        changeUrl(type){
+            if(type == 'ad') {
+                var doc =  document.getElementById('gift');
+                doc.style.border = "none";
+                var doc =  document.getElementById('ad');
+                doc.style.border = "red 2px solid";
+                this.url = "/order/";
+            } else {
+                var doc =  document.getElementById('ad');
+                doc.style.border = "none";
+                var doc =  document.getElementById('gift');
+                doc.style.border = "red 2px solid";
+                this.url="/order-gift/";
+            }
         }
+    },
+    components: {
+        Carousel,
+        Slide,
+        Myvideo,
+
     }
 }
 </script>
 
-<style scoped>
-video {
-    margin: 10px 0;
-    border: 1px solid #eee;
-}
-.discover img {
-    border-radius: 10px;
-    margin-bottom: 15px;
-}
-</style>

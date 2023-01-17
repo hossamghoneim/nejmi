@@ -12,15 +12,15 @@
     <title>لوحة التحكم</title>
 
     <!-- Custom fonts for this template-->
-    <link href="{{ asset('admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/admin/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{ asset('admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('admin/css/rtl.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/admin/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/admin/css/rtl.css') }}" rel="stylesheet">
 
     <style>
         body {
@@ -139,21 +139,21 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="{{ asset('admin/vendor/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('assets/admin/vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="{{ asset('admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+<script src="{{ asset('assets/admin/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="{{ asset('admin/js/sb-admin-2.min.js') }}"></script>
+<script src="{{ asset('assets/admin/js/sb-admin-2.min.js') }}"></script>
 
 <!-- Page level plugins -->
-<script src="{{ asset('admin/vendor/chart.js/Chart.min.js') }}"></script>
+<script src="{{ asset('assets/admin/vendor/chart.js/Chart.min.js') }}"></script>
 
 <!-- Page level custom scripts -->
-<script src="{{ asset('admin/js/demo/chart-area-demo.js') }}"></script>
-<script src="{{ asset('admin/js/demo/chart-pie-demo.js') }}"></script>
+{{--<script src="{{ asset('assets/admin/js/demo/chart-area-demo.js') }}"></script>--}}
+{{--<script src="{{ asset('assets/admin/js/demo/chart-pie-demo.js') }}"></script>--}}
 @stack('script')
 </body>
 

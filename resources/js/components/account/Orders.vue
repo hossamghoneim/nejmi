@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="container">
+        <div class="container" style="direction:rtl; margin-top:40px">
             <div class="row mb-5">
                 <div class="col-12 text-center mb-3">
                     <h4>لوحة التحكم</h4>
@@ -10,31 +10,43 @@
                         <ul>
                             <li>
                                 <router-link to="/dashboard">
-                                    <i class="fa fa-home"></i>
+
                                     لوحة التحكم
                                 </router-link>
                             </li>
                             <li v-if="auth.type == 1">
                                 <router-link to="/videos">
-                                    <i class="fa fa-video"></i>
+
                                     الفيديوهات
                                 </router-link>
                             </li>
-                            <li v-if="auth.type == 0" class="active">
+                            <li class="active">
                                 <router-link to="/orders">
-                                    <i class="fa fa-bars"></i>
+
                                     طلباتي
+                                </router-link>
+                            </li>
+                            <li v-if="auth.type == 1">
+                                <router-link to="/logs">
+
+                                    السجل
+                                </router-link>
+                            </li>
+                            <li v-if="auth.type == 0">
+                                <router-link to="/alerts">
+
+                                    التنبيهات
                                 </router-link>
                             </li>
                             <li>
                                 <router-link to="/account">
-                                    <i class="fa fa-id-card-alt"></i>
+
                                     بياناتي
                                 </router-link>
                             </li>
                             <li>
                                 <a href="/logout">
-                                    <i class="fa fa-sign-out-alt"></i>
+
                                     تسجيل الخروج
                                 </a>
                             </li>
@@ -48,7 +60,7 @@
                                 طلباتي
                             </h6>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body" v-if="auth.type == 0">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive">
@@ -65,17 +77,101 @@
                                             <tbody>
                                             <tr v-for="(order, index) in orders" :key="index">
                                                 <td>
-                                                    <router-link :to="'/user/' + order.freelancer.id">{{ order.freelancer.name }}</router-link>
+                                                    <router-link :to="'/user/' + order.freelancer.username">{{ order.freelancer.name }}</router-link>
                                                 </td>
-                                                <td>{{ order.mount }}$</td>
-                                                <td>{{ order.type == 'ad' ? 'إعلان' : 'إهداء' }}</td>
-                                                <td v-if="order.status == 1">مقبول</td>
-                                                <td v-else-if="order.status == 0">قيد المراجعة</td>
-                                                <td v-else>مرفوض</td>
+                                                <td>{{ order.mount }} MRU</td>
+                                                <td>{{ order.type == 'ad' ? 'إهداء' : 'إعلان' }}</td>
+                                                <td v-if="order.status == 1">
+                                                    <div class="badge badge-success">مقبول</div>
+                                                </td>
+                                                <td v-else-if="order.status == 0">
+                                                    <div class="badge badge-secondary">قيد المراجعة</div>
+                                                </td>
+                                                <td v-else>
+                                                    <div class="badge badge-danger">مرفوض</div>
+                                                </td>
                                                 <td>{{ order.time }}</td>
                                             </tr>
                                             <tr class="text-center" v-if="orders.length == 0">
                                                 <td colspan="5">لايوجد طلبات.</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" v-if="auth.type == 1">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="mb-3">الإحصائيات</h5>
+                                    <div class="row text-center">
+                                        <div class="col-12 col-md-4 my-3">
+                                            <h5>إجمالي أرباحي</h5>
+                                            <h6>{{ total_sales }} MRU</h6>
+                                        </div>
+                                        <div class="col-12 col-md-4 my-3">
+                                            <h5>استلمتها</h5>
+                                            <h6>{{ done_orders_mount }} MRU</h6>
+                                        </div>
+                                        <div class="col-12 col-md-4 my-3">
+                                            <h5>معلقة</h5>
+                                            <h6>{{ total_sales - done_orders_mount }} MRU</h6>
+                                        </div>
+                                    </div>
+                                    <h5 class="mb-3">الطلبات</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                            <tr>
+                                                <th>المشتري</th>
+                                                <th>قيمة الطلب (أرباحي)</th>
+                                                <th>نوع الطلب</th>
+                                                <th>حالة الطلب</th>
+                                                <th>تاريخ الطلب</th>
+                                                <th>رسالة المشتري</th>
+                                                <th>خيارت</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="(order, index) in orders" :key="index">
+                                                <td>
+                                                    <p v-if="order.user">
+                                                        {{ order.user.name }}
+                                                    </p>
+                                                    <p v-else>غير مسجل</p>
+                                                </td>
+                                                <td>{{ order.mount - (order.mount * order.commission / 100) }} MRU</td>
+                                                <td>{{ order.type == 'ad' ? 'إهداء' : 'إعلان' }}</td>
+                                                <td v-if="order.status == 1">
+                                                    <div class="badge badge-success p-1">مقبول</div>
+                                                    <div v-if="order.done" class="badge badge-success p-1">تم تسليم الأربح</div>
+                                                </td>
+                                                <td v-else-if="order.status == 0">
+                                                    <div class="badge badge-secondary">قيد المراجعة</div>
+                                                </td>
+                                                <td v-else>
+                                                    <div class="badge badge-danger p-1">مرفوض</div>
+                                                </td>
+                                                <td>{{ order.time }}</td>
+                                                <td>{{ order.message }}</td>
+                                                <td>
+                                                    <button
+                                                        v-if="order.done != 1 && (order.status == 0 || order.status == -1)"
+                                                        @click="toggleOrderStatus(order.id,1)"
+                                                        class="btn btn-success btn-sm mb-1">
+                                                        قبول
+                                                    </button>
+                                                    <button
+                                                        v-if="order.done != 1 && (order.status == 0 || order.status == 1)"
+                                                        @click="toggleOrderStatus(order.id,-1)"
+                                                        class="btn btn-danger btn-sm">
+                                                        رفض
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="text-center" v-if="orders.length == 0">
+                                                <td colspan="7">لايوجد طلبات.</td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -93,15 +189,58 @@
 <script>
 export default {
     mounted() {
-        axios.get("/request/get-user-orders")
-        .then((res) => {
-            this.orders = res.data
-        })
+        if(authUser) {
+            axios.get("/request/get-user-orders")
+                .then((res) => {
+                    if(authUser.type == 0) {
+                        this.orders = res.data
+                    } else {
+                        this.orders = res.data.orders
+                        this.total_sales = res.data.total_sales
+                        this.done_orders_mount = res.data.done_orders_mount
+                    }
+                })
+        } else {
+         window.location.href = "/login"
+        }
     },
     data: function () {
         return {
             auth: authUser,
-            orders: []
+            orders: [],
+            total_sales: null,
+            done_orders_mount: null,
+        }
+    },
+    methods: {
+        toggleOrderStatus(id, s) {
+            axios.post("/request/toggle-order-status", {
+                order_id: id,
+                status: s
+            })
+            .then((res) => {
+                if(res.status == 200) {
+                    this.orders.find((el) => {
+                        if(el.id == res.data.id)
+                            el.status = res.data.status
+                    })
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'تم التعديل بنجاح'
+                    })
+                }
+            })
         }
     }
 }

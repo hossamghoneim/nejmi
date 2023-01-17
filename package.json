@@ -24,6 +24,14 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "vue-router": "^3.5.3"
+        "@fortawesome/fontawesome-svg-core": "^6.2.1",
+        "@fortawesome/vue-fontawesome": "^2.0.9",
+        "@splidejs/vue-splide": "^0.6.7",
+        "vue-carousel": "^0.18.0",
+        "vue-owl-carousel": "^2.0.3",
+        "vue-router": "^3.5.3",
+        "vue-snap": "^0.7.1",
+        "vue-tiny-slider": "^0.1.39",
+        "vue-video": "^0.1.7"
     }
 }

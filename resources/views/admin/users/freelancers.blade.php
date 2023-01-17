@@ -1,5 +1,5 @@
 @extends('admin.layout.app')
-@section('users', 'active')
+@section('freelancers', 'active')
 @section('content')
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -27,6 +27,20 @@
                 <a href="?status=pending" class="btn btn-primary btn-custom mx-1">قيد المراجعة</a>
                 <a href="?status=rejected" class="btn btn-danger btn-custom mx-1">المرفوضين</a>
             </div>
+            <div class="mt-3">
+                <form action="{{ route('admin.users.freelancers') }}" method="get">
+                    <div class="form-group">
+                        <input type="text"
+                               name="word"
+                               class="form-control w-50 float-right"
+                               placeholder="ابحث عن اسم أو رقم هاتف">
+                        <input type="submit" class="btn btn-info mx-2" value="بحث">
+                    </div>
+                </form>
+            </div>
+            <div class="mt-3">
+                <a href="{{ route('admin.users.freelancers.add') }}" class="btn btn-primary">إضافة مشهور</a>
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -36,7 +50,6 @@
                         <th>الصورة</th>
                         <th>الاسم</th>
                         <th>الهاتف</th>
-                        <th>البلد</th>
                         <th>القسم</th>
                         <th>سعر الإعلان</th>
                         <th>تاريخ الإنضمام</th>
@@ -44,19 +57,6 @@
                         <th>خيارات</th>
                     </tr>
                     </thead>
-                    <tfoot>
-                    <tr>
-                        <th>الصورة</th>
-                        <th>الاسم</th>
-                        <th>الهاتف</th>
-                        <th>البلد</th>
-                        <th>القسم</th>
-                        <th>سعر الإعلان</th>
-                        <th>تاريخ الإنضمام</th>
-                        <th>الحالة</th>
-                        <th>خيارات</th>
-                    </tr>
-                    </tfoot>
                     <tbody>
                     @forelse($users as $user)
                         <tr>
@@ -69,14 +69,13 @@
                             </td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->phone }}</td>
-                            <td>{{ $user->country->name }}</td>
                             <td>{{ $user->category->name }}</td>
                             <td>
                                 الإعلان:
-                                {{ $user->price_ad }}$
+                                {{ $user->price_ad }} MRU
                                 <br>
                                 الإهداء:
-                                {{ $user->price_gift }}$
+                                {{ $user->price_gift }} MRU
                             </td>
                             <td>{{ $user->created_at->format("Y-m-d") }}</td>
                             <td>
@@ -94,12 +93,14 @@
                                        class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
                                     <a href="{{ route('admin.users.freelancers.edit', $user->id) }}"
                                        class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>
-                                    <a onclick="del({{ $user->id }})"
-                                       data-toggle="modal"
-                                       data-target="#deleteModal"
-                                       class="btn btn-danger btn-sm">
-                                        <i class="fa fa-trash-alt"></i>
-                                    </a>
+                                    @if(auth()->user()->role_id == 1)
+                                        <a onclick="del({{ $user->id }})"
+                                           data-toggle="modal"
+                                           data-target="#deleteModal"
+                                           class="btn btn-danger btn-sm">
+                                            <i class="fa fa-trash-alt"></i>
+                                        </a>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

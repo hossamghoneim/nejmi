@@ -1,19 +1,14 @@
 <template>
     <div>
-        <div class="container register">
-            <div class="row my-2 text-center">
-                <div class="col-12">
-                    <h4>تسجيل حساب جديد</h4>
+        <div class="container register " style="margin-top:50px">
+            <div class="row my-2">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+
                     <form action="" method="post">
                         <div class="form-group">
                             <label>الاسم الكامل</label>
                             <input type="text" class="form-control" v-model="user.name">
-                        </div>
-                        <div class="form-group">
-                            <label>البلد</label>
-                            <select class="form-control" v-model="user.country_id">
-                                <option v-for="country in countries" :key="country.id" :value="country.id">{{ country.name }}</option>
-                            </select>
                         </div>
                         <div class="form-group">
                             <label>رقم الهاتف (واتساب)</label>
@@ -21,14 +16,10 @@
                         </div>
                         <div class="form-group">
                             <label>كلمة المرور</label>
-                            <input type="password" class="form-control" v-model="user.password">
-                        </div>
-                        <div class="form-group">
-                            <label>صورتك الشخصية</label>
-                            <input type="file" class="form-control" @change="uploadImage($event)">
+                            <input type="password" autocomplete="off" class="form-control" v-model="user.password">
                         </div>
                         <div class="form-group text-center">
-                            <input type="button" class="btn btn-primary" value="تسجيل" @click="register">
+                            <input type="button" class="btn btn-custom" value="تسجيل" @click="register">
                         </div>
                     </form>
                 </div>
@@ -40,20 +31,14 @@
 <script>
 export default {
     mounted() {
-        axios.get('/request/get-countries')
-        .then((res) => {
-            this.countries = res.data
-        })
+        this.$emit('active', '')
     },
     data: function () {
         return {
-            countries: [],
             user: {
                 name: "",
                 password: "",
                 phone: "",
-                country_id: "",
-                image: "",
                 type: 0,
             }
         }
@@ -64,7 +49,6 @@ export default {
             Object.entries(this.user).forEach(([key, value]) => {
                 fd.append(key, value);
             })
-            fd.append('image', this.user.image)
 
             axios({
                 method: "post",
@@ -73,7 +57,7 @@ export default {
                 headers: {"Content-Type": "multipart/form-data"},
             })
             .then((res) => {
-                window.location.href = "/"
+                window.location.href = "/account"
             })
         },
         uploadImage: function (e) {

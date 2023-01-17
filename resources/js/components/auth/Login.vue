@@ -1,9 +1,10 @@
 <template>
-    <div class="mb-4">
+    <div dir="rtl" class="mt-4" style="margin-top:50px">
         <div class="container login">
-            <div class="row my-2 text-center">
-                <div class="col-12">
-                    <h4>تسجيل الدخول</h4>
+            <div class="row my-2">
+                <div class="col-md-4"></div>
+                <div class="col-md-4 card" style="padding:10px">
+
                     <form action="" method="post">
                         <div class="form-group">
                             <label>رقم الهاتف</label>
@@ -14,14 +15,17 @@
                             <input type="password" class="form-control" v-model="password">
                         </div>
                         <div class="alert alert-danger" v-if="errors.invalid">البيانات غير صحيحة</div>
+                        <div class="form-group text-right">
+                            <a href="/forget-password">هل نسيت كلمة المرور؟</a>
+                        </div>
                         <div class="form-group text-center">
-                            <input type="button" class="btn btn-primary" value="دخول" @click="login">
+                            <input type="button" class="btn btn-custom" value="دخول" @click="login">
                         </div>
                     </form>
-                    <h6>أو يمكنك</h6>
-                    <router-link to="/register" class="my-2">إنشاء حساب جديد</router-link>
+                    <h4 class="text-center mt-2"> <strong>أو يمكنك</strong> </h4>
+                    <router-link to="/register" class="btn btn-custom-outline my-2">إنشاء حساب جديد</router-link>
                     <br>
-                    <router-link to="/join" class="my-2">إنضم إلينا كمشهور</router-link>
+                    <router-link to="/join" class="my-2 btn btn-custom-outline ">إنضم إلينا كمشهور</router-link>
                 </div>
             </div>
         </div>
@@ -30,6 +34,9 @@
 
 <script>
 export default {
+    mounted() {
+        this.$emit('active', '')
+    },
     data: function () {
         return {
             phone: "",
