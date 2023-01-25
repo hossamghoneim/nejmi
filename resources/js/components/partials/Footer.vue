@@ -2,15 +2,10 @@
     <footer>
         <div class="container-fluid">
             <div class="d-flex footer_links align-items-center justify-content-center">
-                <router-link to="/contact-us">
-                    اتصل بنا
-                </router-link>
-                <router-link to="/terms-conditions">
-                    شروط الاستخدام
-                </router-link>
-                <router-link to="/join">
-                    انضم كنجم
-                </router-link>
+
+                <a v-for="page in this.pages" :key="page.id" :href="$router.resolve({name:'page', params: {slug: page.slug}}).href" >
+                    {{ page.name }}
+                </a>
 
             </div>
         </div>

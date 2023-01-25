@@ -19,9 +19,10 @@ class SpecialVideosController extends Controller
     }
     public function save(Request $request) {
         $request->validate([
-            'video' => 'required|max:8000',
+            'video' => 'required|file|mimes:mp4,mov,ogg,qt|max:2048',
             'video_type' => 'required'
         ]);
+
         $video = "";
         if ($request->hasFile('video')) {
             $v = $request->file('video');

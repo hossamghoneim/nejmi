@@ -9,45 +9,45 @@
                     <div class="dashboard-menu">
                         <ul>
                             <li class="active">
-                                <router-link to="/dashboard">
+                                <router-link class="reg" to="/dashboard">
 
-                                    لوحة التحكم
+                                    <label  id="dashboard_label" style="padding-right: 3rem;">لوحة التحكم</label>
                                 </router-link>
                             </li>
                             <li v-if="auth.type == 1">
-                                <router-link to="/videos">
+                                <router-link class="reg" to="/videos">
 
-                                    الفيديوهات
+                                    <label  id="dashboard_label" style="padding-right: 3rem;">الفيديوهات</label>
                                 </router-link>
                             </li>
                             <li>
-                                <router-link to="/orders">
+                                <router-link class="reg" to="/orders">
 
-                                    طلباتي
+                                    <label  id="dashboard_label" style="padding-right: 4.4rem;">طلباتي</label>
                                 </router-link>
                             </li>
-                            <li>
-                                <router-link to="/logs">
+                            <li v-if="auth.type == 1">
+                                <router-link class="reg" to="/logs">
 
-                                    السجل
+                                    <label  id="dashboard_label" style="padding-right: 4.4rem;">السجل</label>
                                 </router-link>
                             </li>
                             <li v-if="auth.type == 0">
-                                <router-link to="/alerts">
+                                <router-link class="reg" to="/alerts">
 
-                                    التنبيهات
+                                    <label  id="dashboard_label" style="padding-right: 4.4rem;">التنبيهات</label>
                                 </router-link>
                             </li>
                             <li>
-                                <router-link to="/account">
-                                    <i class="fa fa-id-card-alt"></i>
-                                    بياناتي
+                                <router-link class="reg" to="/account">
+
+                                    <label id="dashboard_label" style="padding-right: 4.4rem;">بياناتي</label>
                                 </router-link>
                             </li>
                             <li>
-                                <a href="/logout">
+                                <a class="reg" href="/logout">
 
-                                    تسجيل الخروج
+                                    <label  id="dashboard_label" style="padding-right: 2rem;">تسجيل الخروج</label>
                                 </a>
                             </li>
                         </ul>

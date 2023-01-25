@@ -71,6 +71,18 @@
             </div>
         </section>
 
+        <section class="most_trend  trending">
+            <div class="container-fluid">
+                <div dir="rtl" class="head d-flex align-items-center justify-content-between">
+                    <div v-for="filter in this.filters" :key="filter.id" class="link">
+                        <div class="desc">
+                            <h2> فلتر الاسعار </h2> <span> {{ filter.price_filter }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="most_trend  trending first" v-if="this.views && this.views.length">
             <div dir="rtl" class="container-fluid">
                 <div class="head d-flex align-items-center justify-content-between">
@@ -181,7 +193,10 @@ export default {
             .then((res) => {
                 this.latest = res.data
             })
-
+        axios.get('/request/get-prices-filter')
+            .then((res) => {
+                this.filters = res.data;
+            })
         axios.get('/request/get-sliders')
             .then((res) => {
                 this.sliders = res.data;
@@ -206,6 +221,7 @@ export default {
     data: function () {
         return {
             latest: [],
+            filters: [],
             featured: [],
             videos: [],
             views: {},

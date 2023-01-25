@@ -28,6 +28,9 @@ Route::group(['prefix' => 'request'], function () {
     Route::get('/get-sliders', function () {
         return \App\slider::all();
     });
+    Route::get('/get-prices-filter', function () {
+        return \App\Setting::all();
+    });
     Route::get('/get-countries', function () {
         return \App\Country::all();
     });

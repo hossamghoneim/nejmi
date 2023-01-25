@@ -1,3 +1,20 @@
+<style>
+ #gift_select{
+     display: block;
+     width: 100%;
+     height: calc(2.9em + .75rem + 2px);
+     padding: 0.375rem .75rem;
+     font-size: 1rem;
+     font-weight: 400;
+     line-height: 1.5;
+     color: #495057;
+     background-color: #fff;
+     background-clip: padding-box;
+     border: 1px solid #ced4da;
+     border-radius: 50px;
+     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+ }
+</style>
 <template>
     <div>
         <div class="container-fluid" style="direction: rtl;">
@@ -5,7 +22,7 @@
                 <div class="col-md-12">
                     <div class="bread">
                         <div class="container-fluid">
-                            <router-link to="/">الرئيسية | </router-link>
+                            <a :href="$router.resolve({name: 'home'}).href">الرئيسية | </a>
                             <router-link :to="'/category/'+target.category.id"> {{ target.category.name }} |</router-link>
                             <router-link :to="'/user/'+target.username"> {{ target.name }} |</router-link>
                             <span> اطلب من  {{ target.name }} </span>
@@ -48,8 +65,8 @@
                                                             <label class="form-control-label">
                                                                 نوع الاهداء
                                                             </label>
-                                                            <select class="form-control" v-model="order.gift_type" style="direction:ltr">
-                                                                 <option :value="gift.name" v-for="gift in gifts" :key="gift.id">{{ gift.name }}</option>
+                                                            <select class="form-control" id="gift_select" v-model="selected" style="direction:ltr">
+                                                                 <option v-for="gift in gifts" :value="gift.name" :key="gift.id" >{{ gift.name }}</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -233,6 +250,7 @@ export default {
                 this.target = res.data
                 this.price = res.data.price_ad
                 this.loading = false
+                this.order.order_type = res.data.type
             }
         })
 
@@ -245,11 +263,12 @@ export default {
         return {
             auth: authUser,
             form: 1,
+            selected: 'اختر من هذه القائمة',
             gifts : [],
             order: {
                 message: "",
                 target_id: "",
-                order_type: "ad",
+                order_type: "",
                 phone: "",
                 mount: null,
                 image: ""

@@ -1,3 +1,20 @@
+<style>
+#select{
+    display: block;
+    width: 100%;
+    height: calc(2.9em + .75rem + 2px);
+    padding: 1px;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 50px;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+</style>
 <template>
     <div>
         <div class="container register" style="margin-top:50px">
@@ -24,7 +41,7 @@
                         </div>
                         <div class="form-group">
                             <label>القسم</label>
-                            <select class="form-control" v-model="user.category_id">
+                            <select class="form-control" id="select" v-model="user.category_id">
                                 <option v-for="category in categories" :key="category.id" :value="category.id">
                                     {{ category.name }}
                                 </option>
@@ -32,7 +49,7 @@
                         </div>
                         <div class="form-group">
                             <label>البلد</label>
-                            <select class="form-control" v-model="user.country_id">
+                            <select class="form-control" id="select" v-model="user.country_id">
                                 <option v-for="country in countries" :key="country.id" :value="country.id">
                                     {{ country.name }}
                                 </option>

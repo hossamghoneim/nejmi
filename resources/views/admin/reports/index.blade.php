@@ -134,7 +134,11 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('admin.users.freelancers.show', $order->freelancer->id) }}">{{ $order->freelancer->name }}</a>
+                                        @if($order->freelancer)
+                                            <a href="{{ route('admin.users.freelancers.show', $order->freelancer->id) }}">{{ $order->freelancer->name }}</a>
+                                        @else
+                                            غير مسجل
+                                        @endif
                                     </td>
                                     <td>{{ $order->mount }} MRU</td>
                                     <td>{{ $order->order_type == 'ad' ? 'إعلان' : 'إهداء' }}</td>

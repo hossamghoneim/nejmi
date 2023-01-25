@@ -2,10 +2,8 @@
      <div>
         <nav dir="rtl" class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    <router-link to="/">
-                        <img src="/assets/images/logo.png" alt="logo" />
-                    </router-link>
+                <a class="navbar-brand" :href="$router.resolve({name: 'home'}).href">
+                    <img src="/assets/images/logo.png" alt="logo" />
                 </a>
                 <div class="d-flex align-items-center actions">
                     <span data-toggle="modal" data-target="#exampleModalCenter">

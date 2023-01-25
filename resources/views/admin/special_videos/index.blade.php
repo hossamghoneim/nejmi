@@ -79,7 +79,7 @@
                                 <option value="2">ردة فعل</option>
                             </select>
                         </div>
-                        <div class="alert alert-warning" style="display: none" id="sizeMsg">الحد الأقصى المسموح به هو 7 ميغا بايت.</div>
+                        <div class="alert alert-warning" style="display: none" id="sizeMsg">الحد الأقصى المسموح به هو 2 ميغا بايت.</div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">إلغاء</button>
@@ -126,7 +126,7 @@
         $('#video').on('change', function () {
             $('#sizeMsg').hide();
             $('#addBtn').show();
-            if($(this)[0].files[0].size > 700000) {
+            if($(this)[0].files[0].size > 2762430) {
                 $('#sizeMsg').show();
                 $('#addBtn').hide();
             }
